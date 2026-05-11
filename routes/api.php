@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SalesRepresentativeController;
 use App\Http\Controllers\Api\UserController;
@@ -173,4 +174,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store-sales-representatives', [SalesRepresentativeController::class, 'store']);
     Route::put('/update-sales-representatives/{id}', [SalesRepresentativeController::class, 'update']);
     Route::delete('/delete-sales-representatives/{id}', [SalesRepresentativeController::class, 'destroy']);
+
+    Route::get('/get-location', [LocationController::class, 'index']);
+    Route::get('/edit-location/{id}', [LocationController::class, 'show']);
+    Route::post('/store-location', [LocationController::class, 'store']);
+    Route::put('/update-location/{id}', [LocationController::class, 'update']);
+    Route::delete('/delete-location/{id}', [LocationController::class, 'destroy']);
 });
