@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\SalesRepresentativeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SecurityController;
 
@@ -103,6 +104,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // GET  /api/users/{id}/security          — get user security mappings
         Route::get('/{id}/security', [UserController::class, 'security'])->middleware('permission:security.manage');
+
     });
 
     // ── SECURITY (Regions, Product Groups, Customer Groups, Mappings) ──────
@@ -164,4 +166,11 @@ Route::middleware('auth:sanctum')->group(function () {
         // DELETE /api/security/buddies/{id}
         Route::delete('/buddies/{id}', [SecurityController::class, 'destroyBuddy']);
     });
+
+
+    Route::get('/get-sales-representatives', [SalesRepresentativeController::class, 'index']);
+    Route::get('/edit-sales-representatives/{id}', [SalesRepresentativeController::class, 'show']);
+    Route::post('/store-sales-representatives', [SalesRepresentativeController::class, 'store']);
+    Route::put('/update-sales-representatives/{id}', [SalesRepresentativeController::class, 'update']);
+    Route::delete('/delete-sales-representatives/{id}', [SalesRepresentativeController::class, 'destroy']);
 });

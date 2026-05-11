@@ -107,6 +107,8 @@ class UserController extends Controller
             'display_name'     => $request->display_name,
             'password'         => Hash::make($request->password),
             'auth_type'        => $request->auth_type ?? 'internal',
+            'department'       => $request->department,
+            'notes'            => $request->notes,
             'is_mfa_enabled'   => $request->auth_type === 'mfa',
             'sales_rep_id'     => $request->sales_rep_id,
             'visibility_flags' => $request->visibility_flags ?? [
@@ -273,6 +275,8 @@ class UserController extends Controller
             'auth_type'    => $user->auth_type,
             'roles'        => $user->roles->map(fn($r) => ['id' => $r->id, 'name' => $r->role_name])->values(),
             'last_login_at'=> $user->last_login_at,
+            'department' => $user->department,
+            'notes' => $user->notes
         ];
     }
 

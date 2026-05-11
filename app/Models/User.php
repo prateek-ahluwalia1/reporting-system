@@ -24,6 +24,8 @@ class User extends Authenticatable
         'visibility_flags',
         'is_active',
         'last_login_at',
+        'notes',
+        'department'
     ];
 
     protected $hidden = [
