@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\ReportManagementController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SalesRepresentativeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\SecurityController;
+use App\Http\Controllers\Api\SecurityManagementController;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PUBLIC ROUTES (no auth required)
@@ -180,4 +182,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/store-location', [LocationController::class, 'store']);
     Route::put('/update-location/{id}', [LocationController::class, 'update']);
     Route::delete('/delete-location/{id}', [LocationController::class, 'destroy']);
+
+    Route::get('/get-security-management', [SecurityManagementController::class, 'index']);
+    Route::get('/edit-security-management/{id}', [SecurityManagementController::class, 'show']);
+    Route::post('/store-security-management', [SecurityManagementController::class, 'store']);
+    Route::put('/update-security-management/{id}', [SecurityManagementController::class, 'update']);
+    Route::delete('/delete-security-management/{id}', [SecurityManagementController::class, 'destroy']);
+
+    Route::get('/get-report-data', [ReportManagementController::class, 'index']);
+    Route::get('/edit-report/{id}', [ReportManagementController::class, 'show']);
+    Route::post('/store-report', [ReportManagementController::class, 'store']);
+    Route::put('/update-report/{id}', [ReportManagementController::class, 'update']);
+    Route::delete('/delete-report/{id}', [ReportManagementController::class, 'destroy']);
 });
