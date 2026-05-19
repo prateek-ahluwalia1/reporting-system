@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ReportManagement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ReportManagementController extends Controller
@@ -57,13 +58,13 @@ class ReportManagementController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:report_managements,name',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'parentMenu' => 'nullable|string|max:255',
             'childMenu' => 'nullable|string|max:255',
             'grandchildMenu' => 'nullable|string|max:255',
             'category' => 'nullable|string|max:255',
-            'published' => 'required|boolean',
+            'published' => 'required',
             'storedProcedure' => 'nullable|string|max:255',
             'viewerType' => 'nullable|string|max:255',
             'parameters' => 'nullable|array',
@@ -81,6 +82,17 @@ class ReportManagementController extends Controller
             ], 422);
         }
 
+          // Handle file upload
+         $reportFilePath = null;
+        if ($request->hasFile('reportFile')) {
+            $file = $request->file('reportFile');
+            $fileName = time() . '_' . preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file->getClientOriginalName());
+            
+            $filePath = $file->storeAs('reports', $fileName, 'public');
+            
+            $reportFilePath = asset('public/storage/' . $filePath);
+        }
+
         $report = ReportManagement::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -91,6 +103,7 @@ class ReportManagementController extends Controller
             'published' => $request->published,
             'stored_procedure' => $request->storedProcedure,
             'viewer_type' => $request->viewerType,
+            'report_file' => $reportFilePath,
             'parameters' => $request->parameters ? json_encode($request->parameters) : null,
         ]);
 
@@ -119,13 +132,13 @@ class ReportManagementController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:report_managements,name,' . $id,
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'parentMenu' => 'nullable|string|max:255',
             'childMenu' => 'nullable|string|max:255',
             'grandchildMenu' => 'nullable|string|max:255',
             'category' => 'nullable|string|max:255',
-            'published' => 'required|boolean',
+            'published' => 'required',
             'storedProcedure' => 'nullable|string|max:255',
             'viewerType' => 'nullable|string|max:255',
             'parameters' => 'nullable|array',
@@ -142,6 +155,33 @@ class ReportManagementController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
+    // Handle file upload
+    if ($request->hasFile('reportFile')) {
+        // Delete old file if exists
+        if ($report->report_file) {
+            // Extract path from old URL to delete the file
+            $oldPath = str_replace(asset('storage/'), '', $report->report_file);
+            $oldPath = str_replace('storage/app/public/', '', $oldPath);
+            $oldPath = ltrim($oldPath, '/');
+            
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+        
+        $file = $request->file('reportFile');
+        $fileName = time() . '_' . preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $file->getClientOriginalName());
+        
+        // Store file and get path (returns: reports/filename.docx)
+        $filePath = $file->storeAs('reports', $fileName, 'public');
+        
+        // Generate FULL URL
+        $fullUrl = asset('public/storage/' . $filePath);
+        
+        // Store the full URL in database
+        $report->report_file = $fullUrl;
+    }
 
         $report->update([
             'name' => $request->name,

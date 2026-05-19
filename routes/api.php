@@ -192,6 +192,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get-report-data', [ReportManagementController::class, 'index']);
     Route::get('/edit-report/{id}', [ReportManagementController::class, 'show']);
     Route::post('/store-report', [ReportManagementController::class, 'store']);
-    Route::put('/update-report/{id}', [ReportManagementController::class, 'update']);
+    Route::post('/update-report/{id}', [ReportManagementController::class, 'update']);
     Route::delete('/delete-report/{id}', [ReportManagementController::class, 'destroy']);
 });
