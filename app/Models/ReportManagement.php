@@ -21,7 +21,8 @@ class ReportManagement extends Model
         'published',
         'stored_procedure',
         'viewer_type',
-        'parameters'
+        'parameters',
+        'report_file'
     ];
 
     protected $casts = [
