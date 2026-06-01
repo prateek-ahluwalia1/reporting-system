@@ -18,6 +18,8 @@ class ReportManagement extends Model
         'child_menu',
         'grandchild_menu',
         'category',
+        'grand_child_category',
+        'sub_category',
         'published',
         'stored_procedure',
         'viewer_type',
