@@ -17,6 +17,7 @@ class SecurityManagement extends Model
         'customerGroups',
         'mode',
         'name',
+        'user_id',
         'departments',
         'email',
         'menuAccess',

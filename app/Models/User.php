@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->hasMany(SecurityMapping::class, 'user_id');
     }
 
+    public function securityManagement()
+    {
+        return $this->hasMany(SecurityManagement::class, 'user_id');
+    }
+
     public function accessExpanded()
     {
         return $this->hasMany(UserAccessExpanded::class, 'user_id');

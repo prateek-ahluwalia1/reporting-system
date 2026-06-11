@@ -70,7 +70,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('SecurityManagement')->first();
 
         // Credential check
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -307,6 +307,7 @@ class AuthController extends Controller
             'visibility_flags' => $user->visibility_flags,
             'last_login_at'    => $user->last_login_at,
             'roles'            => $roles,
+            'security_management' => $user->securityManagement,
             'permissions'      => $permissions, // e.g. ["reports.view","users.manage","admin.settings"]
         ];
     }
