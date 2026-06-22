@@ -68,10 +68,6 @@ class ReportManagementController extends Controller
             'storedProcedure' => 'nullable|string|max:255',
             'viewerType' => 'nullable|string|max:255',
             'parameters' => 'nullable|array',
-            'parameters.*.id' => 'required|string',
-            'parameters.*.label' => 'required|string',
-            'parameters.*.name' => 'required|string',
-            'parameters.*.type' => 'required|string|in:text,number,date,datetime,select,checkbox,radio',
         ]);
 
         if ($validator->fails()) {
@@ -144,10 +140,6 @@ class ReportManagementController extends Controller
             'storedProcedure' => 'nullable|string|max:255',
             'viewerType' => 'nullable|string|max:255',
             'parameters' => 'nullable|array',
-            'parameters.*.id' => 'required|string',
-            'parameters.*.label' => 'required|string',
-            'parameters.*.name' => 'required|string',
-            'parameters.*.type' => 'required|string|in:text,number,date,datetime,select,checkbox,radio',
         ]);
 
         if ($validator->fails()) {
